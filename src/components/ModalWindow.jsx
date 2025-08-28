@@ -1,31 +1,32 @@
 import React from "react";
 
-const ModalWindow = ({ show, onClose, name, planet, message }) => {
-    if (!show) return null;
+const ModalWindow = ({ isOpen, setIsOpen, children }) => {
+    if (!isOpen) return null; // 👉 скрыт, пока isOpen = false
 
     return (
         <div
-            className="modal show fade d-block"
-            tabIndex="-1"
+            className="modal fade show d-block"
+            tabIndex={-1}
             style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
         >
             <div className="modal-dialog">
-                <div className="modal-content">
+                <div className="modal-content p-3">
                     <div className="modal-header">
-                        <h5 className="modal-title">Form Submitted</h5>
+                        <h5 className="modal-title">Send me an Email</h5>
                         <button
                             type="button"
                             className="btn-close"
-                            onClick={onClose}
+                            onClick={() => setIsOpen(false)}
+                            aria-label="Close"
                         ></button>
                     </div>
-                    <div className="modal-body">
-                        <p><strong>Name:</strong> {name}</p>
-                        <p><strong>Planet:</strong> {planet}</p>
-                        <p><strong>Message:</strong> {message}</p>
-                    </div>
+                    <div className="modal-body">{children}</div>
                     <div className="modal-footer">
-                        <button className="btn btn-secondary" onClick={onClose}>
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => setIsOpen(false)}
+                        >
                             Close
                         </button>
                     </div>
