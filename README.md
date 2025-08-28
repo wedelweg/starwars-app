@@ -1,6 +1,6 @@
 # ⭐ Star Wars App
 
-A learning project built with **React** and **Vite**, featuring **React Router** for navigation.  
+Project built with **React** and **Vite**, featuring **React Router** for navigation.  
 The app demonstrates API integration, routing, and reusable React components.
 
 ---
