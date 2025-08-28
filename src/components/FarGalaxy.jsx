@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { baseUrl } from "../utils/constants.jsx";
+import { baseUrl } from "../utils/constants.js";
 
 const FarGalaxy = () => {
     const [text, setText] = useState("Loading...");

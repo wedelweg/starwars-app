@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { baseUrl } from "../utils/constants.jsx";
+import { baseUrl } from "../utils/constants.js";
 
 const CACHE_KEY = "starwars_opening";
 const CACHE_TIME = 1000 * 60 * 60 * 24; // 24 часа

@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { heroes } from "../utils/constants.jsx";
+import { useParams } from "react-router-dom";
+import { characters } from "../utils/characters.js";
 
-const API_URL = "https://sw-info-api.herokuapp.com/v1/peoples/1";
-const CACHE_KEY = "aboutMeData";
 const CACHE_TIME = 24 * 60 * 60 * 1000;
 
-const AboutMe = () => {
+const AboutMe = ({ hero }) => {
+    const { heroId } = useParams(); // берем из URL если есть
+    const currentHero = heroId || hero || "luke"; // приоритет: из URL → из state → Luke
+
     const [person, setPerson] = useState(null);
     const [error, setError] = useState(null);
 
+    const API_URL = characters[currentHero]?.url;
+    const CACHE_KEY = `aboutMeData_${currentHero}`;
+
     useEffect(() => {
+        if (!API_URL) return;
+
         const cached = localStorage.getItem(CACHE_KEY);
 
         if (cached) {
@@ -37,12 +44,12 @@ const AboutMe = () => {
                 );
             })
             .catch((err) => setError(err.message));
-    }, []);
+    }, [API_URL, CACHE_KEY]);
 
     if (error) return <p>Error: {error}</p>;
     if (!person) return <p>Loading...</p>;
 
-    const hero = heroes.find((h) => h.name === person.name);
+    const heroData = characters[currentHero];
 
     return (
         <div className="container mt-4 d-flex justify-content-center">
@@ -55,14 +62,15 @@ const AboutMe = () => {
                     borderRadius: "12px",
                 }}
             >
-                {hero && hero.image && (
+                {heroData && heroData.img && (
                     <div className="text-center mb-3">
                         <img
-                            src={hero.image}
-                            alt={hero.name}
+                            src={heroData.img}
+                            alt={heroData.name}
                             className="img-fluid rounded"
                             style={{ maxWidth: "100%", height: "auto" }}
                         />
+                        <h2 className="text-center mt-2">{heroData.name}</h2>
                     </div>
                 )}
 

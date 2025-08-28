@@ -1,11 +1,14 @@
-import React from 'react';
-import Navigation from "./navigation.jsx";
+import React from "react";
+import Navigation from "./Navigation.jsx";
+import { characters } from "../utils/characters.js";
 
-const Header = ({changePage}) => {
+const Header = ({ hero }) => {
+    const currentHero = characters[hero] || characters["luke"]; // если героя нет, дефолтно Luke
+
     return (
-        <header>
-            <Navigation/>
-            <h1>Luke Skywalker</h1>
+        <header className="clearfix mb-4">
+            <h1 className="flex-grow-1 text-center text-warning m-0">{currentHero.name}</h1> {/* 👈 здесь меняется */}
+            <Navigation />
         </header>
     );
 };

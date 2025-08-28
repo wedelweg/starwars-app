@@ -4,22 +4,17 @@ import AboutMe from "./AboutMe.jsx";
 import StarWars from "./StarWars.jsx";
 import Contact from "./Contact.jsx";
 import { Routes, Route } from "react-router-dom";
-import { navItems } from "../utils/constants.jsx";
 
-const MainBlock = () => {
+const MainBlock = ({ hero, setHero }) => {
     return (
         <Routes>
-            <>
-            {['/', `${navItems[0].route}`].map((p) => (
-                <Route key={p} path={p} element={<Home />} />
-            ))}
-
-            <Route path={navItems[1].route} element={<AboutMe />} />
-            <Route path={navItems[2].route} element={<StarWars />} />
-            <Route path={navItems[3].route} element={<Contact />} />
-
+            <Route path="/" element={<Home hero={hero} setHero={setHero} />} />
+            <Route path="/:heroId" element={<Home hero={hero} setHero={setHero} />} />
+            <Route path="/aboutMe/:heroId" element={<AboutMe hero={hero} />} />
+            <Route path="/aboutMe" element={<AboutMe hero={hero} />} />
+            <Route path="/starWars" element={<StarWars />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<h1>ERROR!</h1>} />
-            </>
         </Routes>
     );
 };

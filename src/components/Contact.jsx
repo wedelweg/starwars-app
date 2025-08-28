@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { baseUrl } from "../utils/constants";
+import { baseUrl } from "../utils/constants.js";
 import ModalWindow from "./ModalWindow";
 
 const Contact = () => {

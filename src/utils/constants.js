@@ -41,10 +41,10 @@ export const baseUrl = "https://sw-info-api.herokuapp.com";
 export const period = 24 * 60 * 60 * 1000;
 
 export const navItems = [
-    { title: "Home", route: "" },
-    { title: "About Me", route: "aboutMe" },
-    { title: "Star Wars", route: "starWars" },
-    { title: "Contact", route: "contact" },
+    { title: "Home", route: "/" },
+    { title: "About Me", route: "/aboutMe" },
+    { title: "Star Wars", route: "/starWars" },
+    { title: "Contact", route: "/contact" },
 ];
 
 export { luke as main };
