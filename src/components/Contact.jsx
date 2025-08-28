@@ -6,11 +6,6 @@ const Contact = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // состояния формы
-    const [name, setName] = useState("");
-    const [planet, setPlanet] = useState("");
-    const [message, setMessage] = useState("");
-
     useEffect(() => {
         const fetchPlanets = async () => {
             try {
@@ -39,24 +34,10 @@ const Contact = () => {
         fetchPlanets();
     }, []);
 
-    // обработчик отправки формы
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("Form submitted:");
-        console.log("Name:", name);
-        console.log("Planet:", planet);
-        console.log("Message:", message);
-
-        // можно очистить форму после отправки
-        setName("");
-        setPlanet("");
-        setMessage("");
-    };
-
     return (
         <div className="container mt-5">
             <h1>Contact</h1>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">
                         Your name
@@ -65,8 +46,6 @@ const Contact = () => {
                         type="text"
                         className="form-control"
                         id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
                         placeholder="Your name..."
                     />
                 </div>
@@ -84,13 +63,7 @@ const Contact = () => {
                             <option>{error}</option>
                         </select>
                     ) : (
-                        <select
-                            className="form-select"
-                            id="planet"
-                            value={planet}
-                            onChange={(e) => setPlanet(e.target.value)}
-                        >
-                            <option value="">Select a planet...</option>
+                        <select className="form-select" id="planet">
                             {planets.map((planet, index) => (
                                 <option key={index} value={planet.name}>
                                     {planet.name}
@@ -108,8 +81,6 @@ const Contact = () => {
                         className="form-control"
                         id="message"
                         rows="4"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
                         placeholder="Enter your message here..."
                     ></textarea>
                 </div>
@@ -123,4 +94,3 @@ const Contact = () => {
 };
 
 export default Contact;
-
