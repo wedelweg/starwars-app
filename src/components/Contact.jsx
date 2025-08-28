@@ -11,16 +11,15 @@ const Contact = () => {
             try {
                 const response = await fetch(`${baseUrl}/v1/planets/`);
                 if (!response.ok) {
-                    throw new Error("Ошибка загрузки данных");
+                    setError("Failed to load data");
+                    return;
                 }
+
                 const data = await response.json();
-
-                /* console.log("API response:", data); */
-
                 setPlanets(data.map((p) => ({ name: p.name })));
             } catch (err) {
-                console.error("Ошибка загрузки планет:", err);
-                setError("Не удалось загрузить список планет");
+                console.error("Failed to fetch planets:", err);
+                setError("Could not load planets");
             } finally {
                 setLoading(false);
             }
@@ -28,8 +27,6 @@ const Contact = () => {
 
         fetchPlanets();
     }, []);
-
-
 
     return (
         <div className="container mt-5">
