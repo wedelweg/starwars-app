@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { baseUrl } from "../utils/constants";
+import ModalWindow from "./ModalWindow";
 
 const Contact = () => {
     const [planets, setPlanets] = useState([]);
@@ -9,6 +10,7 @@ const Contact = () => {
     const [name, setName] = useState("");
     const [planet, setPlanet] = useState("");
     const [message, setMessage] = useState("");
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const fetchPlanets = async () => {
@@ -18,15 +20,8 @@ const Contact = () => {
                     setError("Failed to load data");
                     return;
                 }
-
                 const data = await response.json();
-                console.log("API response:", data);
-
-                if (Array.isArray(data)) {
-                    setPlanets(data.map((p) => ({ name: p.name })));
-                } else {
-                    setError("Invalid data format");
-                }
+                setPlanets(data.map((p) => ({ name: p.name })));
             } catch (err) {
                 console.error("Failed to fetch planets:", err);
                 setError("Could not load planets");
@@ -40,11 +35,11 @@ const Contact = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form submitted:");
-        console.log("Name:", name);
-        console.log("Planet:", planet);
-        console.log("Message:", message);
+        setShowModal(true); // открываем модалку
+    };
 
+    const closeModal = () => {
+        setShowModal(false);
         setName("");
         setPlanet("");
         setMessage("");
@@ -55,9 +50,7 @@ const Contact = () => {
             <h1>Contact</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
-                        Your name
-                    </label>
+                    <label htmlFor="name" className="form-label">Your name</label>
                     <input
                         type="text"
                         className="form-control"
@@ -65,13 +58,12 @@ const Contact = () => {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="Your name..."
+                        required
                     />
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="planet" className="form-label">
-                        Planet
-                    </label>
+                    <label htmlFor="planet" className="form-label">Planet</label>
                     {loading ? (
                         <select className="form-select" disabled>
                             <option>Loading...</option>
@@ -86,6 +78,7 @@ const Contact = () => {
                             id="planet"
                             value={planet}
                             onChange={(e) => setPlanet(e.target.value)}
+                            required
                         >
                             <option value="">Select a planet...</option>
                             {planets.map((planet, index) => (
@@ -98,9 +91,7 @@ const Contact = () => {
                 </div>
 
                 <div className="mb-3">
-                    <label htmlFor="message" className="form-label">
-                        Message
-                    </label>
+                    <label htmlFor="message" className="form-label">Message</label>
                     <textarea
                         className="form-control"
                         id="message"
@@ -108,13 +99,20 @@ const Contact = () => {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Enter your message here..."
+                        required
                     ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-success">
-                    Send
-                </button>
+                <button type="submit" className="btn btn-success">Send</button>
             </form>
+
+            <ModalWindow
+                show={showModal}
+                onClose={closeModal}
+                name={name}
+                planet={planet}
+                message={message}
+            />
         </div>
     );
 };
