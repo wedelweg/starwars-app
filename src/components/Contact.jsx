@@ -16,7 +16,13 @@ const Contact = () => {
                 }
 
                 const data = await response.json();
-                setPlanets(data.map((p) => ({ name: p.name })));
+                console.log("API response:", data);
+
+                if (Array.isArray(data)) {
+                    setPlanets(data.map((p) => ({ name: p.name })));
+                } else {
+                    setError("Invalid data format");
+                }
             } catch (err) {
                 console.error("Failed to fetch planets:", err);
                 setError("Could not load planets");
