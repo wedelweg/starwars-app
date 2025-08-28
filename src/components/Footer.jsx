@@ -14,7 +14,7 @@ const Footer = () => {
             <ModalWindow isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
                 <p>
                     You can email me at:{" "}
-                    <a href="mailto:luke@starwars.com">luke@starwars.com</a>
+                    <a href="mailto:luke@starwars.com">andrey@trofimenko.org</a>
                 </p>
             </ModalWindow>
         </footer>
