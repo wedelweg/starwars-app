@@ -3,8 +3,6 @@
 Project built with **React** and **Vite**, featuring **React Router** for navigation.  
 The app demonstrates API integration, routing, and reusable React components.
 
----
-
 ## 🚀 Features
 
 - Home page with a welcome message
@@ -13,8 +11,6 @@ The app demonstrates API integration, routing, and reusable React components.
 - Fetching planets from [SW Info API](https://sw-info-api.herokuapp.com/v1/planets/)
 - `EmailButton` component with **Email me** link opening the default mail client
 - Styled with Bootstrap
-
----
 
 ## 🛠️ Tech Stack
 
