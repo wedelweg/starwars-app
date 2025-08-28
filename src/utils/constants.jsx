@@ -45,7 +45,6 @@ export const navItems = [
     { title: "About Me", route: "/aboutMe" },
     { title: "Star Wars", route: "/starWars" },
     { title: "Contact", route: "/contact" },
-    { title: "Contact2", route: "/contact2" }
 ];
 
 export { luke as main };
