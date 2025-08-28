@@ -9,6 +9,7 @@ import { navItems } from "../utils/constants.jsx";
 const MainBlock = () => {
     return (
         <Routes>
+            <>
             {['/', `${navItems[0].route}`].map((p) => (
                 <Route key={p} path={p} element={<Home />} />
             ))}
@@ -18,6 +19,7 @@ const MainBlock = () => {
             <Route path={navItems[3].route} element={<Contact />} />
 
             <Route path="*" element={<h1>ERROR!</h1>} />
+            </>
         </Routes>
     );
 };
