@@ -3,6 +3,10 @@
 Project built with **React** and **Vite**, featuring **React Router** for navigation.  
 The app demonstrates API integration, routing, and reusable React components.
 
+## 🌍 Demo
+
+👉 [Live Demo on GitHub Pages](https://wedelweg.github.io/starwars-app/)
+
 ## 🚀 Features
 
 - Home page with a welcome message
