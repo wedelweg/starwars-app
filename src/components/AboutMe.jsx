@@ -43,7 +43,7 @@ const AboutMe = ({ hero }) => {
                 return response.json();
             })
             .then((data) => {
-                const personData = data.result?.properties || data; // вытаскиваем свойства из swapi.tech
+                const personData = data.result?.properties || data;
                 setPerson(personData);
                 localStorage.setItem(
                     CACHE_KEY,
