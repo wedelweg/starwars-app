@@ -12,7 +12,7 @@ const AboutMe = ({ hero }) => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const API_URL = characters[currentHero]?.url;
+    const API_URL = characters[currentHero] ? characters[currentHero].url : undefined;
     const CACHE_KEY = `aboutMeData_${currentHero}`;
 
     useEffect(() => {
