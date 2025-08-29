@@ -2,20 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { characters } from "../utils/characters.js";
 
-const CACHE_TIME = 24 * 60 * 60 * 1000;
+const CACHE_TIME = 24 * 60 * 60 * 1000; // 24 часа
 
 const AboutMe = ({ hero }) => {
-    const { heroId } = useParams(); // берем из URL если есть
-    const currentHero = heroId || hero || "luke"; // приоритет: из URL → из state → Luke
+    const { heroId } = useParams();
+    const currentHero = heroId || hero || "luke";
 
     const [person, setPerson] = useState(null);
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const API_URL = characters[currentHero]?.url;
     const CACHE_KEY = `aboutMeData_${currentHero}`;
 
     useEffect(() => {
-        if (!API_URL) return;
+        if (!API_URL) {
+            setError("Hero not found");
+            setLoading(false);
+            return;
+        }
 
         const cached = localStorage.getItem(CACHE_KEY);
 
@@ -25,6 +30,7 @@ const AboutMe = ({ hero }) => {
 
             if (!isExpired) {
                 setPerson(parsed.data);
+                setLoading(false);
                 return;
             } else {
                 localStorage.removeItem(CACHE_KEY);
@@ -37,17 +43,34 @@ const AboutMe = ({ hero }) => {
                 return response.json();
             })
             .then((data) => {
-                setPerson(data);
+                const personData = data.result?.properties || data; // вытаскиваем свойства из swapi.tech
+                setPerson(personData);
                 localStorage.setItem(
                     CACHE_KEY,
-                    JSON.stringify({ data, timestamp: Date.now() })
+                    JSON.stringify({ data: personData, timestamp: Date.now() })
                 );
             })
-            .catch((err) => setError(err.message));
+            .catch((err) => setError(err.message))
+            .finally(() => setLoading(false));
     }, [API_URL, CACHE_KEY]);
 
-    if (error) return <p>Error: {error}</p>;
-    if (!person) return <p>Loading...</p>;
+    if (loading)
+        return (
+            <div className="d-flex justify-content-center mt-5">
+                <div className="spinner-border text-warning" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        );
+
+    if (error)
+        return (
+            <div className="container mt-4">
+                <div className="alert alert-danger text-center">Error: {error}</div>
+            </div>
+        );
+
+    if (!person) return null;
 
     const heroData = characters[currentHero];
 
@@ -57,7 +80,7 @@ const AboutMe = ({ hero }) => {
                 className="p-4 shadow-lg"
                 style={{
                     maxWidth: "500px",
-                    background: "rgba(0, 0, 0, 0.7)",
+                    background: "rgba(0, 0, 0, 0.8)",
                     color: "white",
                     borderRadius: "12px",
                 }}
@@ -74,17 +97,47 @@ const AboutMe = ({ hero }) => {
                     </div>
                 )}
 
-                <p><span style={{ textDecoration: "underline" }}>ID:</span> {person.id}</p>
-                <p><span style={{ textDecoration: "underline" }}>Height:</span> {person.height} cm</p>
-                <p><span style={{ textDecoration: "underline" }}>Mass:</span> {person.mass} kg</p>
-                <p><span style={{ textDecoration: "underline" }}>Birth Year:</span> {person.birth_year}</p>
-                <p><span style={{ textDecoration: "underline" }}>Gender:</span> {person.gender}</p>
-                <p><span style={{ textDecoration: "underline" }}>Hair Color:</span> {person.hair_color}</p>
-                <p><span style={{ textDecoration: "underline" }}>Eye Color:</span> {person.eye_color}</p>
-                <p><span style={{ textDecoration: "underline" }}>Skin Color:</span> {person.skin_color}</p>
-                <p><span style={{ textDecoration: "underline" }}>Homeworld ID:</span> {person.homeworld}</p>
-                <p><span style={{ textDecoration: "underline" }}>Created:</span> {new Date(person.created).toLocaleDateString()}</p>
-                <p><span style={{ textDecoration: "underline" }}>Edited:</span> {new Date(person.edited).toLocaleDateString()}</p>
+                <ul className="list-group list-group-flush">
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>ID:</strong> {person.id}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Height:</strong> {person.height} cm
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Mass:</strong> {person.mass} kg
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Birth Year:</strong> {person.birth_year}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Gender:</strong> {person.gender}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Hair Color:</strong> {person.hair_color}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Eye Color:</strong> {person.eye_color}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Skin Color:</strong> {person.skin_color}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Homeworld ID:</strong> {person.homeworld}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Created:</strong>{" "}
+                        {person.created
+                            ? new Date(person.created).toLocaleDateString()
+                            : "N/A"}
+                    </li>
+                    <li className="list-group-item bg-dark text-white">
+                        <strong>Edited:</strong>{" "}
+                        {person.edited
+                            ? new Date(person.edited).toLocaleDateString()
+                            : "N/A"}
+                    </li>
+                </ul>
             </div>
         </div>
     );
